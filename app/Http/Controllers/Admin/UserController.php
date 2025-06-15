@@ -8,6 +8,7 @@ use App\Models\Guru;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -90,13 +91,16 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
-            if ($user->id === auth()->user->id) {
+            if ($user->id === auth()->user()->id) {
                 return redirect()->route('admin.users.index')->with('error', 'Anda tidak bisa menghapus akun Anda sendiri.');
             }
             $user->delete();
             return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
         } catch (\Exception $e) {
-            return redirect()->route('admin.users.index')->with('error', 'Gagal menghapus user.');
+            // Log the actual exception message for debugging
+            Log::error('Failed to delete user: ' . $e->getMessage(), ['user_id' => $user->id]);
+
+            return redirect()->route('admin.users.index')->with('error', 'Gagal menghapus user. ' . $e->getMessage());
         }
     }
 }
