@@ -18,6 +18,7 @@ use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 class AbsensiController extends Controller
 {
@@ -237,8 +238,7 @@ class AbsensiController extends Controller
         $rowIndex = 4; // Dimulai dari baris 4 setelah judul dan filter
 
         foreach ($headers as $header) {
-            dd(get_class($sheet));
-            $sheet->setCellValueByColumnAndRow($columnIndex, $rowIndex, $header);
+            $sheet->setCellValue(Coordinate::stringFromColumnIndex($columnIndex) . $rowIndex, $header);
             $columnIndex++;
         }
         $sheet->getStyle('A' . $rowIndex . ':' . $sheet->getHighestColumn() . $rowIndex)->applyFromArray($headerStyle);

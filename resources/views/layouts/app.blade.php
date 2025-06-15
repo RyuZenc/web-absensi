@@ -55,7 +55,6 @@
                     </div>
                 </div>
             </div>
-            {{ $slot }}
         </main>
     </div>
     {{-- resources/views/layouts/app.blade.php --}}
