@@ -8,12 +8,21 @@ use Illuminate\Database\Eloquent\Model;
 class Siswa extends Model
 {
     use HasFactory;
+    protected $table = 'siswa';
+    protected $fillable = ['nis', 'nama_lengkap', 'kelas_id'];
 
-    protected $table = 'siswa'; // Nama tabel di database
-    protected $fillable = ['nama']; // Kolom yang bisa diisi
+    public function user()
+    {
+        return $this->hasOne(User::class, 'related_id', 'id')->where('role', 'siswa');
+    }
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
 
     public function absensis()
     {
-        return $this->hasMany(Absensi::class); // Satu siswa punya banyak absensi
+        return $this->hasMany(Absensi::class);
     }
 }
